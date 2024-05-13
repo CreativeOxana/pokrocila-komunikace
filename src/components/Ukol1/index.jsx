@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { SwitchButton } from './SwitchButton';
 import './style.css';
 
@@ -13,7 +14,7 @@ import './style.css';
     budete si muset vytvořit vlastní funkci, která při každém zavolání přepne stav na opačnou hodnotu.
     Vyzkoušejte, že jde pomocí vypínače žárovku zapnout a vypnout.
 
-  Krok 3: Vypínač má taky svou ikonku. Přidejte tedy do komponenty `SwitchButton` prop `on`, 
+  Krok 3: Vypínač má taky svou ikonku. Přidejte tedy do komponenty `SwitchButton` prop `onSwitch`, 
     která bude udávat jestli je vypínač zapnutý nebo vypnutý. Podle toho nastavte třídu 
     `switch-button--on` na tlačitku. Stav `bulbOn` použijte k nastavení ikonky vypínače a 
     jeho textu, takže když je žárovka zapnutá, tak je vypínač zapnutý a bude hlásit "Vypnout" 
@@ -30,10 +31,21 @@ import './style.css';
 */
 
 export const Ukol1 = () => {
+  const [bulbOn, setBulbOn] = useState(false);
+
+  const handleSwitch = (isOn) => {
+    setBulbOn(!isOn);
+    isOn ? setBulbOn(false) : window.confirm('Jsi si opravdu jistý?');
+  };
+
   return (
     <>
-      <div className="bulb bulb--on" />
-      <SwitchButton label="Vypnout" />
+      <div className={bulbOn ? 'bulb bulb--on' : 'bulb'} />
+      <SwitchButton
+        onSwitch={handleSwitch}
+        on={bulbOn}
+        label={bulbOn ? 'Zapnout' : 'Vypnout'}
+      />
     </>
   );
 };
